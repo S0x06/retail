@@ -5,7 +5,6 @@ import (
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	"log"
-	"net/http"
 	"retail/config"
 	"retail/model"
 	"retail/router"

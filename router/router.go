@@ -28,6 +28,13 @@ func InitRouter() *gin.Engine {
 
 		engine.GET("/index", handler.Index)
 
+		// engine.GET("/conpons", handler.Index)
+		// engine.GET("/conpons/:id", handler.Index)
+		// engine.POST("/conpons", handler.Index)
+		// engine.PUT("/conpons", handler.Index)
+		// engine.DELETE("/conpons/:id",handler.Index)
+
+
 	}
 
 	return engine
