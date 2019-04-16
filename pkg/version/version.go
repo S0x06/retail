@@ -21,8 +21,14 @@ func (info Info) String() string {
 	return info.GitTag
 }
 
-func Get() Info {
-	return Info{
+var TagInfo = &Info{} 
+
+func init(){
+	TagInfo = Get()
+}
+
+func Get() *Info {
+	return &Info{
 		GitTag:       gitTag,
 		GitCommit:    gitCommit,
 		GitTreeState: gitTreeState,

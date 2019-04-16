@@ -2,47 +2,38 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 	"log"
-	"retail/config"
-	"retail/model"
+	."retail/config"
 	"retail/router"
+	"retail/pkg/db"
 )
 
-var (
-	cfg = pflag.StringP("config", "c", "", "server config file path.")
-)
 
 func main() {
 
-	pflag.Parse()
+	//初始化数据库
+	mysql := db.Database{}
+	mysql.NewDatabase(Cfg.Mysql.UserName, Cfg.Mysql.PassWord, Cfg.Mysql.Addr,  Cfg.Mysql.Name)
+	defer mysql.Close()
 
-	// init config
-	if err := config.Init(*cfg); err != nil {
-		panic(err)
-	}
-
-	model.DB.Init()
-	defer model.DB.Close()
-
-	gin.SetMode(viper.GetString("runmode"))
+	//设置模式
+	gin.SetMode(Cfg.Base.RunMode)
 
 	// Create the Gin engine.
 	engine := router.InitRouter()
 
 	//TLS
-	//cert := viper.GetString("tls.cert")
-	//key := viper.GetString("tls.key")
+	//cert := Cfg.Tls.Cert
+	//key := Cfg.Tls.Key
 	//if cert != "" && key != "" {
 	//	go func() {
-	//		log.Infof("Start to listening the incoming requests on https address: %s", viper.GetString("tls.addr"))
-	//		engine.RunTLS(viper.GetString("tls.addr"), cert, key)
+	//		log.Infof("Start to listening the incoming requests on https address: %s", Cfg.Tls.Addr)
+	//		engine.RunTLS(Cfg.Tls.Addr, cert, key)
 	//	}()
 	//}
 	
 	//RUN
-	log.Printf("Start to listening the incoming requests on http address: %s", viper.GetString("addr"))
-	engine.Run(viper.GetString("addr"))
+	log.Printf("Start to listening the incoming requests on http address: %s", Cfg.Base.Addr)
+	engine.Run(Cfg.Base.Addr)
 	
 }

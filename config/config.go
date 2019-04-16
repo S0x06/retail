@@ -2,13 +2,14 @@ package config
 
 import (
 	"strings"
+	"fmt"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/lexkong/log"
 	"github.com/spf13/viper"
 )
 
-type App struct{
+type Base struct{
 	RunMode string
 	Addr  string
 	Name string
@@ -16,66 +17,47 @@ type App struct{
 	JwtSecret string
 }
 
-type Mysql struct{
+type Tls struct {
+	Addr string
+	Cert string
+	Key string
+}
+
+type Mysql struct {
 	Name string
 	Addr string
 	UserName string
-	passWord string
-}
-
-type Redis struct{
-	Addr string
-	UserName string
-	passWord string
-}
-
-type Consul struct{
-	Addr string
-}
-
-type Zikpin struct{
-	Addr string
-}
-
-type MQ struct{
-	Addr string
+	PassWord string
 }
 
 type Config struct {
-	Name string
-	App *App
-	Mysq *Mysql
-	Redis *Redis
-	Consul *Consul
-	Zikpin *Zikpin
-		MQ *MQ
+	Path string
+	Tls *Tls
+	Base *Base
+	Mysql *Mysql
 }
 
-func Init(cfg string) error {
-	c := Config{
-		Name: cfg,
+//初始化配置
+var Cfg = &Config{}
+
+func init(){
+	if err := Cfg.NewConfig(); err != nil {
+		panic(err)
 	}
 
-	// 初始化配置文件
-	if err := c.New(); err != nil {
-		return err
-	}
+	fmt.Println("All config load success")
 
-	// 初始化日志包
-	c.NewLog()
-
-	// 监控配置文件变化并热加载程序
-	c.watch()
-
-	return nil
 }
+	
+// 配置
+func (cfg *Config) NewConfig() error {
 
-func (c *Config) New() error {
-	if c.Name != "" {
-		viper.SetConfigFile(c.Name) // 如果指定了配置文件，则解析指定的配置文件
+	if cfg.Path != "" {
+		viper.SetConfigFile(cfg.Path) // 如果指定了配置文件，则解析指定的配置文件
 	} else {
 		viper.AddConfigPath("conf") // 如果没有指定配置文件，则解析默认的配置文件
 		viper.SetConfigName("config")
+		cfg.Path = "conf/config"
 	}
 	viper.SetConfigType("yaml")  // 设置配置文件格式为YAML
 	viper.AutomaticEnv()         // 读取匹配的环境变量
@@ -86,10 +68,68 @@ func (c *Config) New() error {
 		return err
 	}
 
+	// 应用配置
+	cfg.baseConfig()
+
+	// TLS配置
+	cfg.tlsConfig()
+
+	//数据库配置
+    cfg.mysqlConfig()
+
+	// 初始化日志包
+	cfg.logConfig()
+
+	// 监控配置文件变化并热加载程序
+	cfg.watch()
+
 	return nil
 }
 
-func (c *Config) NewLog() {
+
+//基础配置加载
+func (cfg *Config)baseConfig() *Base{
+	base := &Base{
+		RunMode:  viper.GetString("base.runmode"),
+		Addr :  viper.GetString("base.addr"),
+		Name:  viper.GetString("base.name"),
+		Url : viper.GetString("base.url"),
+		JwtSecret:  viper.GetString("base.jwt_secret"),
+	}
+
+	cfg.Base = base
+	return base
+}
+
+
+//TLS配置加载
+func (cfg *Config)tlsConfig() *Tls{
+	tls := &Tls{
+		Addr :  viper.GetString("tls.addr"),
+		Cert : viper.GetString("tls.cert"),
+		Key : viper.GetString("tls.key"),
+	}
+
+	cfg.Tls = tls
+	return tls
+}
+
+
+//mysql配置加载
+func (cfg *Config)mysqlConfig() *Mysql{
+	mysql := &Mysql{
+		UserName: viper.GetString("mysql.username"),
+		PassWord: viper.GetString("mysql.password"),
+		Addr: viper.GetString("mysql.addr"),
+		Name: viper.GetString("mysql.name"),
+	}
+	
+	cfg.Mysql = mysql
+	return mysql
+}
+
+//日记配置加载
+func (cfg *Config) logConfig() {
 	passLagerCfg := log.PassLagerCfg{
 		Writers:        viper.GetString("log.writers"),
 		LoggerLevel:    viper.GetString("log.logger_level"),
@@ -105,71 +145,8 @@ func (c *Config) NewLog() {
 }
 
 
-func NewApp *App{
-
-	app := &App{
-		RunMode:  viper.GetString("app.runmode"),
-		Addr :  viper.GetString("app.addr"),
-		Name:  viper.GetString("app.name"),
-		Url : viper.GetString("app.url"),
-		JwtSecret:  viper.GetString("app.jwt_secret")
-	}
-
-	return app
-}
-
-
-func NewMysql() *Mysql{
-	mysql := &Mysql{
-		UserName: viper.GetString("mysql.username"),
-		PassWord: viper.GetString("mysql.password"),
-		Addr: viper.GetString("mysql.addr"),
-		Name: viper.GetString("mysql.name")
-	}
-	
-	return mysql
-}
-
-func NewRedis() *Redis{
-
-	redis := &Redis{
-			Addr : viper.GetString("redis.addr"),
-			UserName :viper.GetString("redis.username"),
-			passWord :viper.GetString("redis.password"),
-	} 
-	return redis
-}
-
-
-func NewConsul() *Consul{
-	consul := &Consul{
-			Addr : viper.GetString("consul.addr"),
-			UserName :viper.GetString("consul.username"),
-			passWord :viper.GetString("consul.password"),
-	} 
-	return consul
-}
-
-func NewZikpin() *Zikpin{
-	zikpin := &Zikpin{
-			Addr : viper.GetString("zikpin.addr"),
-			UserName :viper.GetString("zikpin.username"),
-			passWord :viper.GetString("zikpin.password"),
-	} 
-	return zikpin
-}
-
-func (c *Config) NewMQ() *MQ{
-	mq := &MQ{
-			Addr : viper.GetString("mq.addr"),
-			UserName :viper.GetString("mq.username"),
-			passWord :viper.GetString("mq.password"),
-	} 
-	return mq
-}
-
 // 监控配置文件变化并热加载程序
-func (c *Config) watch() {
+func (cfg *Config) watch() {
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {
 		log.Infof("Config file changed: %s", e.Name)
