@@ -1,9 +1,10 @@
-runmode: debug                 # 开发模式, debug, release, test
-addr: :8080                  # HTTP绑定端口
-name: retail              # API Server的名字
-url: http://127.0.0.1:8080   # pingServer函数请求的API服务器的ip:port
-max_ping_count: 10           # pingServer函数try的次数
-jwt_secret: Rtg8BPKNEf2mB4mgvKONGPZZQSaJWNLijxR42qRgq0iBb5
+       # pingServer函数try的次数
+base:
+  runmode: debug                 # 开发模式, debug, release, test
+  addr: :8080                  # HTTP绑定端口
+  name: retail              # API Server的名字
+  url: http://127.0.0.1:8080   # pingServer函数请求的API服务器的ip:port
+  jwt_secret: Rtg8BPKNEf2mB4mgvKONGPZZQSaJWNLijxR42qRgq0iBb5
 tls:
   addr: :8081
   cert: conf/server.crt
@@ -21,5 +22,19 @@ mysql:
   name: retail
   addr: 127.0.0.1:3306
   username: root
-  password: 123
+  password: root
+redis:
+  addr: 127.0.0.1:33
+  username: root
+  password: root
+consul:
+  addr: 127.0.0.1:33
+mq:
+  addr: 127.0.0.1:33
+  username: root
+  password: root
+zikpin:
+  addr: 127.0.0.1:33
+  username: root
+  password: root
 

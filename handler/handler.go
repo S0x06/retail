@@ -2,9 +2,8 @@ package handler
 
 import (
 	"net/http"
-
 	"retail/pkg/errno"
-
+	"retail/pkg/version"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,7 +13,45 @@ type Response struct {
 	Data    interface{} `json:"data"`
 }
 
-func SendResponse(c *gin.Context, err error, data interface{}) {
+//成功返回
+func SendResponse(c *gin.Context) {
+	// code, message := errno.DecodeErr(err)
+
+
+	var queries map[string]interface{} = map[string]interface{}{
+		"rel":"search",
+		"href":"dfg",
+		"prompt":"dfg",
+		"data": "ghj",
+	}
+
+	var template map[string]interface{} = map[string]interface{}{
+		"rel": "search",
+		"href": "dg",
+		"prompt": "Search",
+		"data": "sdf",
+	}
+
+
+	var data map[string]interface{} = map[string]interface{}{
+		"version": version.TagInfo.String(),
+		"href":"abc",
+		"links":"DF",
+		"items": "sss",
+		"queries": "",
+		"template": template,
+	}
+
+	// always return http.StatusOK
+	c.JSON(http.StatusOK, Response{
+		Code:    0,
+		Message: "OK",
+		Data:    data,
+	})
+}
+
+//失败返回
+func SendErrorResponse(c *gin.Context, err error, data interface{}) {
 	code, message := errno.DecodeErr(err)
 
 	// always return http.StatusOK
