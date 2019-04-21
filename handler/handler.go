@@ -1,10 +1,10 @@
 package handler
 
 import (
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"retail/pkg/errno"
 	"retail/pkg/version"
-	"github.com/gin-gonic/gin"
 )
 
 type Response struct {
@@ -17,28 +17,26 @@ type Response struct {
 func SendResponse(c *gin.Context) {
 	// code, message := errno.DecodeErr(err)
 
-
 	var queries map[string]interface{} = map[string]interface{}{
-		"rel":"search",
-		"href":"dfg",
-		"prompt":"dfg",
-		"data": "ghj",
+		"rel":    "search",
+		"href":   "dfg",
+		"prompt": "dfg",
+		"data":   "ghj",
 	}
 
 	var template map[string]interface{} = map[string]interface{}{
-		"rel": "search",
-		"href": "dg",
+		"rel":    "search",
+		"href":   "dg",
 		"prompt": "Search",
-		"data": "sdf",
+		"data":   "sdf",
 	}
 
-
 	var data map[string]interface{} = map[string]interface{}{
-		"version": version.TagInfo.String(),
-		"href":"abc",
-		"links":"DF",
-		"items": "sss",
-		"queries": "",
+		"version":  version.TagInfo.String(),
+		"href":     "abc",
+		"links":    "DF",
+		"items":    "sss",
+		"queries":  queries,
 		"template": template,
 	}
 
