@@ -11,7 +11,7 @@
  Target Server Version : 50553
  File Encoding         : 65001
 
- Date: 22/04/2019 18:58:07
+ Date: 26/04/2019 19:02:40
 */
 
 SET NAMES utf8mb4;
@@ -23,8 +23,13 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `activity`;
 CREATE TABLE `activity`  (
   `id` int(11) UNSIGNED NOT NULL,
+  `coupon_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '优惠卷id',
+  `activity_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '活动类型',
+  `start_time` timestamp NULL DEFAULT NULL COMMENT '活动开始时间',
+  `end_time` timestamp NULL DEFAULT NULL COMMENT '活动结束时间',
+  `issuer_id` int(11) NULL DEFAULT NULL COMMENT '商家id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
+) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for activity_type
@@ -59,14 +64,47 @@ CREATE TABLE `coupon`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
+-- Table structure for coupon_log
+-- ----------------------------
+DROP TABLE IF EXISTS `coupon_log`;
+CREATE TABLE `coupon_log`  (
+  `id` int(11) NOT NULL,
+  `conpon_id` int(11) NULL DEFAULT 0 COMMENT '优惠卷id',
+  `user_id` int(11) NULL DEFAULT 0 COMMENT '用户id',
+  `issuer_id` int(11) NULL DEFAULT NULL COMMENT '商家id',
+  `desc` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `create_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for coupon_receive
+-- ----------------------------
+DROP TABLE IF EXISTS `coupon_receive`;
+CREATE TABLE `coupon_receive`  (
+  `id` int(10) UNSIGNED NOT NULL,
+  `receive_id` int(11) NULL DEFAULT 0 COMMENT '用户id',
+  `conpon_id` int(11) NULL DEFAULT 0 COMMENT '优惠卷id',
+  `issuer_id` int(11) NULL DEFAULT 0 COMMENT '商家id',
+  `used` tinyint(255) NULL DEFAULT 0 COMMENT '是否已使用 0否 1是',
+  `create_at` timestamp NULL DEFAULT NULL COMMENT '领取时间',
+  `delete` tinyint(255) NULL DEFAULT 0 COMMENT '删除0否 1是',
+  `delete_at` timestamp NULL DEFAULT NULL COMMENT '删除时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
+
+-- ----------------------------
 -- Table structure for release
 -- ----------------------------
 DROP TABLE IF EXISTS `release`;
 CREATE TABLE `release`  (
   `id` int(11) UNSIGNED NOT NULL,
   `crowd` int(255) NULL DEFAULT 0 COMMENT '人群 0不限 1男性 2女性',
-  `area` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '地区',
-  `service` tinyint(255) NULL DEFAULT NULL COMMENT '具体业务方，比如 1激活中心，2新手券，3下单券，用户生日券',
+  `area` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '地区 0 无地区限制',
+  `service` tinyint(255) NULL DEFAULT 0 COMMENT '具体业务方，比如 1激活中心，2新手券，3下单券，用户生日券',
+  `issuer_id` int(11) NULL DEFAULT 0 COMMENT '商家id',
+  `create_at` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `release_at` timestamp NULL DEFAULT NULL COMMENT '发布时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
@@ -89,27 +127,5 @@ CREATE TABLE `type`  (
 -- ----------------------------
 INSERT INTO `type` VALUES (1, '满减券', 1, '2019-04-22 10:29:20', 0, NULL);
 INSERT INTO `type` VALUES (2, '折扣券', 1, '2019-04-22 10:29:40', 0, NULL);
-
--- ----------------------------
--- Table structure for use_conpon_log
--- ----------------------------
-DROP TABLE IF EXISTS `use_conpon_log`;
-CREATE TABLE `use_conpon_log`  (
-  `id` int(11) NOT NULL,
-  `conpon_id` int(11) NULL DEFAULT 0,
-  `user_id` int(11) NULL DEFAULT 0,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
-
--- ----------------------------
--- Table structure for user_conpon
--- ----------------------------
-DROP TABLE IF EXISTS `user_conpon`;
-CREATE TABLE `user_conpon`  (
-  `id` int(10) UNSIGNED NOT NULL,
-  `user_id` int(11) NULL DEFAULT 0,
-  `conpon_id` int(11) NULL DEFAULT 0,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
 
 SET FOREIGN_KEY_CHECKS = 1;
