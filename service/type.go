@@ -1,6 +1,9 @@
-package conpon
+package service
 
 
+/**
+*
+*/
 func GetAll(){
 
 }
@@ -15,5 +18,5 @@ func Modify(){
 }
 
 func DelOne(){
-
+	
 }

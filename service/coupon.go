@@ -1,5 +1,4 @@
-package conpon
-
+package service
 
 func GetAll(){
 

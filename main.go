@@ -5,16 +5,16 @@ import (
 	"log"
 	."retail/config"
 	"retail/router"
-	"retail/pkg/db"
+	"retail/pkg/dao"
 )
 
 
 func main() {
 
 	//初始化数据库
-	mysql := db.Database{}
-	mysql.NewDatabase(Cfg.Mysql.UserName, Cfg.Mysql.PassWord, Cfg.Mysql.Addr,  Cfg.Mysql.Name)
-	defer mysql.Close()
+	// mysql := dao.Database{}
+	// mysql.New(Cfg.Mysql.UserName, Cfg.Mysql.PassWord, Cfg.Mysql.Addr,  Cfg.Mysql.Name)
+	// defer mysql.Close()
 
 	//设置模式
 	gin.SetMode(Cfg.Base.RunMode)

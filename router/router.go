@@ -6,7 +6,7 @@ import (
 	_ "retail/docs"
 
 	"github.com/gin-gonic/gin"
-	"retail/handler"
+	"retail/handler/coupon"
 )
 
 func InitRouter() *gin.Engine {
