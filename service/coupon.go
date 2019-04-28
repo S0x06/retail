@@ -1,18 +1,18 @@
 package service
 
-func GetAll(){
+func GetCouponAll(){
 
 }
 
-func GetOne(){
+func GetCouponOne(){
 
 }
 
 
-func Modify(){
+func ModifyCoupon(){
 
 }
 
-func DelOne(){
+func DelCouponOne(){
 
 }

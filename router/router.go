@@ -35,6 +35,12 @@ func InitRouter() *gin.Engine {
 		// engine.DELETE("/conpons/:id",handler.Index)
 
 
+		engine.GET("/conpons/type", coupon.GetType)
+		engine.GET("/conpons/type/:id", coupon.GetTypeOne)
+		engine.POST("/conpons/type", coupon.CreateType)
+		engine.PUT("/conpons/type/:id", coupon.ModifyType)
+		engine.DELETE("/conpons/type/:id",coupon.DelType)
+
 	}
 
 	return engine

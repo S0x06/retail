@@ -4,19 +4,19 @@ package service
 /**
 *
 */
-func GetAll(){
+func GetTypeAll(){
 
 }
 
-func GetOne(){
+func GetTypeOne(){
 
 }
 
 
-func Modify(){
+func ModifyType(){
 
 }
 
-func DelOne(){
+func DelTypeOne(){
 	
 }

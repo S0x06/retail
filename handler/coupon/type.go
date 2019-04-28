@@ -1,19 +1,23 @@
 package conpon
 
 
-func GetAll(){
+func GetType(){
 
 }
 
-func GetOne(){
+func GetTypeOne(){
+
+}
+
+func CreateType(){
 
 }
 
 
-func Modify(){
+func ModifyType(){
 
 }
 
-func DelOne(){
+func DelType(){
 
 }
