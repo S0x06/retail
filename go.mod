@@ -23,6 +23,8 @@ require (
 	golang.org/x/tools v0.0.0-20190208222737-3744606dbb67
 	gopkg.in/gin-gonic/gin.v1 v1.3.0
 	gopkg.in/go-playground/validator.v8 v8.18.2 // indirect
+	//github.com/go-playground/validator.v9 v9.28.0
+	github.com/braintree/manners 0.4.0
 )
 
 //replace gopkg.in/gin-gonic/gin.v1 => github.com/gin-gonic/gin v1.3.0

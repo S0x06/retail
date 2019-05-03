@@ -28,12 +28,11 @@ func InitRouter() *gin.Engine {
 
 		engine.GET("/index", handler.Index)
 
-		// engine.GET("/conpons", handler.Index)
-		// engine.GET("/conpons/:id", handler.Index)
-		// engine.POST("/conpons", handler.Index)
-		// engine.PUT("/conpons", handler.Index)
-		// engine.DELETE("/conpons/:id",handler.Index)
-
+		// engine.GET("/conpons", handler.Index)      //获取列表
+		// engine.GET("/conpons/:id", handler.Index)  //获取详情
+		// engine.POST("/conpons", handler.Index)     //创建
+		// engine.PUT("/conpons/:id", handler.Index)  //更新
+		// engine.DELETE("/conpons/:id",handler.Index)  // 删除
 
 	}
 
