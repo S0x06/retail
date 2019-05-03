@@ -1,4 +1,4 @@
-package db
+package dao
 
 
 import (
@@ -14,7 +14,7 @@ type Database struct {
 	Self *gorm.DB
 }
 
-func (this *Database)NewDatabase(username, password, addr, name string) *Database{
+func (this *Database)New(username, password, addr, name string) *Database{
 	
 	config := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=%t&loc=%s",
 		username,

@@ -4,16 +4,17 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	. "retail/config"
-	"retail/pkg/db"
+	"retail/pkg/dao"
 	"retail/router"
 )
 
 func main() {
 
 	//初始化数据库
-	mysql := db.Database{}
-	mysql.NewDatabase(Cfg.Mysql.UserName, Cfg.Mysql.PassWord, Cfg.Mysql.Addr, Cfg.Mysql.Name)
-	defer mysql.Close()
+
+	// mysql := dao.Database{}
+	// mysql.New(Cfg.Mysql.UserName, Cfg.Mysql.PassWord, Cfg.Mysql.Addr,  Cfg.Mysql.Name)
+	// defer mysql.Close()
 
 	//设置模式
 	gin.SetMode(Cfg.Base.RunMode)

@@ -6,7 +6,7 @@ import (
 	_ "retail/docs"
 
 	"github.com/gin-gonic/gin"
-	"retail/handler"
+	"retail/handler/coupon"
 )
 
 func InitRouter() *gin.Engine {
@@ -33,6 +33,12 @@ func InitRouter() *gin.Engine {
 		// engine.POST("/conpons", handler.Index)     //创建
 		// engine.PUT("/conpons/:id", handler.Index)  //更新
 		// engine.DELETE("/conpons/:id",handler.Index)  // 删除
+
+		engine.GET("/conpons/type", coupon.GetType)
+		engine.GET("/conpons/type/:id", coupon.GetTypeOne)
+		engine.POST("/conpons/type", coupon.CreateType)
+		engine.PUT("/conpons/type/:id", coupon.ModifyType)
+		engine.DELETE("/conpons/type/:id",coupon.DelType)
 
 	}
 
